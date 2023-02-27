@@ -16,14 +16,18 @@ const graph = {
 }
 function searchMangoSellerFrom(name: keyof typeof graph) {
   let searchQueue = graph[name]
+  const searched: string[] = []
   while (searchQueue.length) {
-    if (isMangoSeller(searchQueue[0])) {
-      console.log(`${searchQueue[0]} is a mango seller!`)
-      return true
-    } else {
-      searchQueue = searchQueue.concat(graph[searchQueue[0] as keyof typeof graph])
-      searchQueue.shift()
-    }
+    if (!searched.includes(searchQueue[0])) {
+      if (isMangoSeller(searchQueue[0])) {
+        console.log(`${searchQueue[0]} is a mango seller!`)
+        return true
+      } else {
+        searchQueue = searchQueue.concat(graph[searchQueue[0] as keyof typeof graph])
+        const name = searchQueue.shift()!
+        searched.push(name)
+      }
+    } else searchQueue.shift()
   }
   return false
 }
