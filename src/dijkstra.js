@@ -31,15 +31,19 @@ const parents = {
   FIN: null,
 }
 
-const processed = ["FIN"]
+const processed = []
 
 let cheapestNode = findCheapestUnprocessedNode(costs, processed)
 
 while (cheapestNode) {
   const neighbors = Object.keys(graph[cheapestNode])
   neighbors.forEach((neighborNode) => {
-    costs[neighborNode] = costs[cheapestNode] + graph[cheapestNode][neighborNode]
-    parents[neighborNode] = cheapestNode
+    const oldCost = costs[neighborNode]
+    const newCost = costs[cheapestNode] + graph[cheapestNode][neighborNode]
+    if (oldCost > newCost) {
+      costs[neighborNode] = newCost
+      parents[neighborNode] = cheapestNode
+    }
   })
 
   processed.push(cheapestNode)
